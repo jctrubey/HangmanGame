@@ -1,21 +1,20 @@
 import java.io.File
-import java.io.FileNotFoundException
-import java.util.Scanner
-import java.util.ArrayList
+import java.util.*
+import kotlin.collections.ArrayList
 
 fun main() {
     println("Welcome to Hangman")
     println("Would you like me to guess a word I am thinking of or would you like to choose a word and have me guess?")
     println("Enter 1 to have me guess your word, Enter 2 to guess my word")
 
-    var dictionary = popdictionary()
+    var dictionary : ArrayList<String> = popdictionary()
 
     val input = Scanner(System.`in`)
 
     val choice: Int = input.nextInt()
 
     if (choice == 1) {
-        UserPicks()
+        UserPicks(dictionary)
     } else if (choice == 2) {
         ProgramPicks()
     }
@@ -26,7 +25,7 @@ fun ProgramPicks () {
     println("incomplete")
 }
 
-fun UserPicks () {
+fun UserPicks (dictionary: ArrayList<String>) {
 
     println("Please enter the word you would like to use to play")
 
@@ -36,20 +35,70 @@ fun UserPicks () {
 
     val word = input.nextLine().toLowerCase()
 
+    var numguesses : Int = 0
+
     println(word)
 
-    val wordlength = word.length
+    println(word.length)
 
-    println(wordlength)
+    var answer : CharArray = InitAns(word.length)
+
+    var LengthDictionary : ArrayList<String> = WordsOfLen(dictionary, word.length)
+
+    guesser(numguesses)
+
+    println("println version" + guesser(numguesses))
 
 }
 
 fun popdictionary (): ArrayList<String> {
-    val s = Scanner(File("src/dictionary.txt"))
+    val file = Scanner(File("src/dictionary.txt"))
     var list = ArrayList<String>()
-    while (s.hasNext()) {
-        list.add(s.next())
+    while (file.hasNext()) {
+        list.add(file.next())
     }
-    s.close()
+    file.close()
     return list
+}
+
+fun WordsOfLen (original : ArrayList<String>, Length: Int): ArrayList<String> {
+
+    var newdictionary = ArrayList<String>()
+
+    println(original.size)
+
+    for (x in original) {
+        if (x.length == Length) {
+           newdictionary.add(x)
+        }
+    }
+
+    println(newdictionary.size)
+
+    return newdictionary
+
+}
+
+fun guesser (attempt: Int) : Char {
+
+    val letters : Array<Char> = arrayOf('e', 't', 'a', 'o', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'c', 'u', 'm', 'w', 'f', 'g', 'y', 'p', 'b', 'v', 'k', 'j', 'x', 'q', 'z')
+    var guess : Char
+    if (attempt == 0) {
+        println("Does your word contain " +letters[0] + "?")
+    }
+
+    guess = letters[0]
+    return guess
+
+}
+
+//fun answer (answer : CharArray) : CharArray{
+//
+//}
+
+fun InitAns (Len : Int) : CharArray {
+
+    var AnsArr = CharArray(Len)
+
+    return AnsArr
 }
