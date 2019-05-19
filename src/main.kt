@@ -35,19 +35,21 @@ fun UserPicks (dictionary: ArrayList<String>) {
 
     val word = input.nextLine().toLowerCase()
 
-    var numguesses : Int = 0
+    var num_guesses = 0
+
+    var correct_letters = 0
 
     println(word)
 
     println(word.length)
 
-    var answer : CharArray = InitAns(word.length)
+    var answer : CharArray = initAns(word.length)
 
-    var LengthDictionary : ArrayList<String> = WordsOfLen(dictionary, word.length)
+    var Updated_Dict : ArrayList<String> = WordsOfLen(dictionary, word.length)
 
-    guesser(numguesses)
+    val letters : ArrayList<Char> = arrayListOf('e', 't', 'a', 'o', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'c', 'u', 'm', 'w', 'f', 'g', 'y', 'p', 'b', 'v', 'k', 'j', 'x', 'q', 'z')
 
-    println("println version" + guesser(numguesses))
+    guesser(letters, Updated_Dict, answer)
 
 }
 
@@ -79,15 +81,25 @@ fun WordsOfLen (original : ArrayList<String>, Length: Int): ArrayList<String> {
 
 }
 
-fun guesser (attempt: Int) : Char {
+fun guesser (letters : ArrayList<Char>, updated_dict : ArrayList<String>, answer : CharArray) : Char {
 
-    val letters : Array<Char> = arrayOf('e', 't', 'a', 'o', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'c', 'u', 'm', 'w', 'f', 'g', 'y', 'p', 'b', 'v', 'k', 'j', 'x', 'q', 'z')
-    var guess : Char
-    if (attempt == 0) {
-        println("Does your word contain " +letters[0] + "?")
+    var num_guesses = 0
+
+    var num_correct = 0
+
+    var guess = 'e'
+    if (num_correct == 0) {
+        guess = letters[num_guesses]
     }
 
-    guess = letters[0]
+    ask_if_contains(guess, answer)
+
+    for (x in answer) {
+        println(x)
+    }
+
+    //continue here
+
     return guess
 
 }
@@ -96,9 +108,79 @@ fun guesser (attempt: Int) : Char {
 //
 //}
 
-fun InitAns (Len : Int) : CharArray {
+fun initAns (Len : Int) : CharArray {
 
     var AnsArr = CharArray(Len)
 
     return AnsArr
+}
+
+fun insert_vals (Ans_Arr : CharArray, loc : ArrayList<Int>, letter: Char) : CharArray {
+
+    for (x in loc) {
+        Ans_Arr[x-1] = letter
+    }
+    return Ans_Arr
+}
+
+fun rem_letter (letter : Char, dictionary : CharArray) : CharArray {
+
+    //continue here
+
+    return dictionary
+}
+
+fun ask_if_contains (letter : Char, answer: CharArray) : CharArray {
+
+    val input = Scanner(System.`in`)
+
+    println("does your word contain " +letter + "? input yes or no")
+
+    var result = true
+
+    val choice : String = input.nextLine()
+
+    if (choice == "yes") {
+        result = true
+        println("word contains this letter")
+        val locations : ArrayList<Int> = ask_location(answer.size)
+        return insert_vals(answer, locations, letter)
+    } else if (choice == "no") {
+        result = false
+    }
+    return answer
+}
+
+fun ask_location (ans_len : Int) : ArrayList<Int> {
+
+    var loc_array : ArrayList<Int> = arrayListOf()
+
+    val input = Scanner(System.`in`)
+
+    println("Enter 1 location in the word where the letter is contained (from 1 - $ans_len)")
+
+    loc_array.add(input.nextInt())
+
+    var contains_more : String = "yes"
+
+    while (contains_more == "yes") {
+        println("does the word contain more of this letter? respond yes or no")
+
+        val stringinput = Scanner(System.`in`)
+
+        contains_more = stringinput.nextLine()
+
+        if (contains_more == "yes") {
+            println("Please input the next location")
+            loc_array.add(input.nextInt())
+        }
+    }
+
+    val itr = loc_array.iterator()
+
+    while (itr.hasNext()) {
+        println(itr.next())
+    }
+
+    return loc_array
 }
