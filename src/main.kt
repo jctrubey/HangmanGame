@@ -92,14 +92,11 @@ fun guesser (letters : ArrayList<Char>, updated_dict : ArrayList<String>, answer
         guess = letters[num_guesses]
     }
 
-    ask_if_contains(guess, answer)
+    var GuesserAnswer = ask_if_contains(guess, answer)
 
-    for (x in answer) {
-        println(x)
-    }
 
+    println("im back here")
     //continue here
-
     return guess
 
 }
@@ -121,10 +118,28 @@ fun insert_vals (Ans_Arr : CharArray, loc : ArrayList<Int>, letter: Char) : Char
         Ans_Arr[x-1] = letter
     }
     return Ans_Arr
+    //returns to ask if contains function
 }
 
-fun rem_letter (letter : Char, dictionary : CharArray) : CharArray {
+fun rem_letter (letter : Char, dictionary : ArrayList<String>, pos1 : Int) : ArrayList<String> {
 
+    for (x in dictionary) {
+        if (x[pos1] != 'e') {
+            dictionary.remove(x)
+        }
+    }
+    //continue here
+
+    return dictionary
+}
+
+fun rem_letter (letter : Char, dictionary : ArrayList<String>, pos1 : Int, pos2 : Int) : ArrayList<String> {
+
+    for (x in dictionary) {
+        if (x[pos1] != 'e' && x[pos2] != 'e') {
+            dictionary.remove(x)
+        }
+    }
     //continue here
 
     return dictionary
@@ -145,6 +160,7 @@ fun ask_if_contains (letter : Char, answer: CharArray) : CharArray {
         println("word contains this letter")
         val locations : ArrayList<Int> = ask_location(answer.size)
         return insert_vals(answer, locations, letter)
+        //returns back to guesser funciton
     } else if (choice == "no") {
         result = false
     }
@@ -175,6 +191,8 @@ fun ask_location (ans_len : Int) : ArrayList<Int> {
             loc_array.add(input.nextInt())
         }
     }
+
+    //prints locations of the items in the answer
 
     val itr = loc_array.iterator()
 
