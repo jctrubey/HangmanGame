@@ -50,6 +50,7 @@ fun UserPicks (dictionary: ArrayList<String>) {
     val letters : ArrayList<Char> = arrayListOf('e', 't', 'a', 'o', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'c', 'u', 'm', 'w', 'f', 'g', 'y', 'p', 'b', 'v', 'k', 'j', 'x', 'q', 'z')
 
     guesser(letters, Updated_Dict, answer)
+    println("and now here")
 
 }
 
@@ -81,19 +82,41 @@ fun WordsOfLen (original : ArrayList<String>, Length: Int): ArrayList<String> {
 
 }
 
-fun guesser (letters : ArrayList<Char>, updated_dict : ArrayList<String>, answer : CharArray) : Char {
+//guesser called from user picks
+
+fun guesser (letters : ArrayList<Char>, dictionary : ArrayList<String>, answer : CharArray) : Char {
 
     var num_guesses = 0
 
     var num_correct = 0
 
+    var GuesserAnswer : CharArray = answer
+
+    val answer_pos = arrayListOf<Int>()
+
+    println("checking array data....")
+
+    var guesser_dict : ArrayList<String> = dictionary
+
     var guess = 'e'
     if (num_correct == 0) {
         guess = letters[num_guesses]
+        num_guesses++
+
+        var temp_answer = ask_if_contains(guess, answer)
+
+        for (x in 0 until GuesserAnswer.size) {
+            if (GuesserAnswer[x].equals(guess)) {
+                answer_pos += x
+            }
+        }
+
+        println("Checking positions...")
+        for (x in answer_pos) {
+            println(x)
+        }
+//            rem_letter(guess, guesser_dict, )
     }
-
-    var GuesserAnswer = ask_if_contains(guess, answer)
-
 
     println("im back here")
     //continue here
@@ -163,6 +186,7 @@ fun ask_if_contains (letter : Char, answer: CharArray) : CharArray {
         //returns back to guesser funciton
     } else if (choice == "no") {
         result = false
+        println("word does not contain this letter")
     }
     return answer
 }
